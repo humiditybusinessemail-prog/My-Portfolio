@@ -35,7 +35,13 @@ cleanDir(dist);
 fs.mkdirSync(dist, { recursive: true });
 
 staticFiles.forEach(file => {
-  copyFile(path.join(root, file), path.join(dist, file));
+  const srcPath = path.join(root, file);
+  copyFile(srcPath, path.join(dist, file));
+
+  // Ensure Netlify can serve the site from the root URL.
+  if (file === 'azzam-portfolio.html') {
+    copyFile(srcPath, path.join(dist, 'index.html'));
+  }
 });
 
 staticDirs.forEach(dir => {
